@@ -1,7 +1,6 @@
 # neo4j-graph-algo
 <p align="left">
-$\color{green}{test}$
-$\color{blue}{LOAD\ CSV\ WITH\ HEADERS\ FROM\ "file:///transport-nodes.csv"\ AS\ row}$<br>
+$\color{green}{LOAD\ CSV\ WITH\ HEADERS\ FROM\ "file:///transport-nodes.csv"\ AS\ row}$<br>
 MERGE (place:Place {id:row.id})<br>
 SET place.latitude = toFloat(row.latitude),<br>
 place.longitude = toFloat(row.latitude),<br>
