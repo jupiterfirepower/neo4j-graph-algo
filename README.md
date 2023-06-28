@@ -13,5 +13,5 @@ MERGE (origin)-[:EROAD {distance: toInteger(row.cost)}]->(destination)<br>
 </p>
 <p>MATCH (p:Place) RETURN p<br></p>
 <p align="left">
-<img src="/img/g1.png" width="350" title="hover text">
+<img src="/img/g1.jpg" width="350" title="full city graph.">
 </p>
