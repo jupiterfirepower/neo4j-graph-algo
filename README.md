@@ -1,4 +1,5 @@
 # neo4j-graph-algo
+![#1589F0] 
 <p align="left" style="color: #1589F0">
 LOAD CSV WITH HEADERS FROM "file:///transport-nodes.csv" AS row<br>
 MERGE (place:Place {id:row.id})<br>
@@ -11,6 +12,7 @@ MATCH (origin:Place {id: row.src})<br>
 MATCH (destination:Place {id: row.dst})<br>
 MERGE (origin)-[:EROAD {distance: toInteger(row.cost)}]->(destination)<br>
 </p>
+`#1589F0`
 <p>MATCH (p:Place) RETURN p<br></p>
 <p align="left">
 <img src="/img/g1.jpg"  title="full city graph.">
