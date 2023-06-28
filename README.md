@@ -1,5 +1,5 @@
 # neo4j-graph-algo
-<p align="left">
+<p align="left" style="color: #1589F0">
 LOAD CSV WITH HEADERS FROM "file:///transport-nodes.csv" AS row<br>
 MERGE (place:Place {id:row.id})<br>
 SET place.latitude = toFloat(row.latitude),<br>
@@ -18,7 +18,7 @@ MERGE (origin)-[:EROAD {distance: toInteger(row.cost)}]->(destination)<br>
 <p align="left">Shortest Path</p>
 <p align="left">
 CALL gds.graph.project(<br>
-    'myGraph1',<br>
+    'myGraph',<br>
     'Place',<br>
     'EROAD',<br>
     {<br>
