@@ -60,7 +60,7 @@ CALL gds.bfs.stream('myGraph', {<br>
 YIELD path<br>
 RETURN path<br></p>
 <p align="left">
-<img src="/img/g4.jpg"  title="Breadth First Search result on transport grapth.">
+<img src="/img/g4.png"  title="Breadth First Search result on transport grapth.">
 </p>
 <p align="left">Breadth First Search algorithm with target nodes:<br></p>
 <p align="left">
@@ -74,5 +74,5 @@ YIELD path<br>
 RETURN path<br></p>
 
 <p align="left">
-<img src="/img/g5.jpg"  title="Breadth First Search result on transport grapth with target nodes.">
+<img src="/img/g5.png"  title="Breadth First Search result on transport grapth with target nodes.">
 </p>
