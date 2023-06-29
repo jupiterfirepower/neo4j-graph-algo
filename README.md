@@ -87,3 +87,15 @@ RETURN path<br></p>
 <p align="left">
 <img src="/img/g6.png"  title="Breadth First Search algorithm with maxDepth.">
 </p>
+<p align="left">
+MATCH (source:Place{id: "Hoek van Holland"})<br>
+CALL gds.bfs.stream('myGraph', {<br>
+  sourceNode: source,<br>
+  maxDepth: 1<br>
+})<br>
+YIELD path<br>
+RETURN path<br>
+</p>
+<p align="left">
+<img src="/img/g7.png"  title="Breadth First Search algorithm with maxDepth.">
+</p>
