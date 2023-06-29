@@ -76,3 +76,14 @@ RETURN path<br></p>
 <p align="left">
 <img src="/img/g5.png"  title="Breadth First Search result on transport grapth with target nodes.">
 </p>
+<p align="left">Breadth First Search algorithm with maxDepth:<br></p>
+<p align="left">MATCH (source:Place{id: "London"})<br>
+CALL gds.bfs.stream('myGraph', {<br>
+  sourceNode: source,<br>
+  maxDepth: 1<br>
+})<br>
+YIELD path<br>
+RETURN path<br></p>
+<p align="left">
+<img src="/img/g6.png"  title="Breadth First Search algorithm with maxDepth.">
+</p>
