@@ -50,3 +50,29 @@ ORDER BY index<br>
 <p align="left">
 <img src="/img/g2.jpg"  title="shortest path road graph.">
 </p>
+<br>
+<p align="left">Breadth First Search<br></p>
+<p>CALL gds.graph.project('myGraph', 'Place', 'EROAD')<br></p>
+<p>MATCH (source:Place{id: "London"})<br>
+CALL gds.bfs.stream('myGraph', {<br>
+  sourceNode: source<br>
+})<br>
+YIELD path<br>
+RETURN path<br></p>
+<p align="left">
+<img src="/img/g4.jpg"  title="Breadth First Search result on transport grapth.">
+</p>
+<p align="left">Breadth First Search algorithm with target nodes:<br></p>
+<p align="left">
+MATCH (a:Place{id:'London'}), (d:Place{id:'Amsterdam'}), (e:Place{id:'Rotterdam'})<br>
+WITH id(a) AS source, [id(d), id(e)] AS targetNodes<br>
+CALL gds.bfs.stream('myGraph', {<br>
+  sourceNode: source,<br>
+  targetNodes: targetNodes<br>
+})<br>
+YIELD path<br>
+RETURN path<br></p>
+
+<p align="left">
+<img src="/img/g5.jpg"  title="Breadth First Search result on transport grapth with target nodes.">
+</p>
