@@ -183,8 +183,58 @@ RETURN<br>
     nodes(path) as path<br>
 ORDER BY index<br>
 </p>
-<img src="/img/g10.png"  title="Shrotest path algorithm from Hoek van Holland to Gouda.">
+<img src="/img/g10.png"  title="Yen’s Shortest Path from Hoek van Holland to Gouda.">
 </p>
+<p align="left">CREATE (a:Location {name: 'A'}),<br>
+       (b:Location {name: 'B'}),<br>
+       (c:Location {name: 'C'}),<br>
+       (d:Location {name: 'D'}),<br>
+       (e:Location {name: 'E'}),<br>
+       (f:Location {name: 'F'}),<br>
+       (a)-[:ROAD {cost: 50}]->(b),<br>
+       (a)-[:ROAD {cost: 50}]->(c),<br>
+       (a)-[:ROAD {cost: 100}]->(d),<br>
+       (b)-[:ROAD {cost: 40}]->(d),<br>
+       (c)-[:ROAD {cost: 40}]->(d),<br>
+       (c)-[:ROAD {cost: 80}]->(e),<br>
+       (d)-[:ROAD {cost: 30}]->(e),<br>
+       (d)-[:ROAD {cost: 80}]->(f),<br>
+       (e)-[:ROAD {cost: 40}]->(f);<br>
+</p>
+<p align="left">CALL gds.graph.project(<br>
+    'myGraph',<br>
+    'Location',<br>
+    'ROAD',<br>
+    {<br>
+        relationshipProperties: 'cost'<br>
+    }<br>
+)<br>
+<br>
+MATCH (source:Location {name: 'A'}), (target:Location {name: 'F'})<br>
+CALL gds.shortestPath.yens.stream('myGraph', {<br>
+    sourceNode: source,<br>
+    targetNode: target,<br>
+    k: 3,<br>
+    relationshipWeightProperty: 'cost'<br>
+})<br>
+YIELD index, sourceNode, targetNode, totalCost, nodeIds, costs, path<br>
+RETURN<br>
+    index,<br>
+    gds.util.asNode(sourceNode).name AS sourceNodeName,<br>
+    gds.util.asNode(targetNode).name AS targetNodeName,<br>
+    totalCost,<br>
+    [nodeId IN nodeIds | gds.util.asNode(nodeId).name] AS nodeNames,<br>
+    costs<br>
+ORDER BY index<br>
+</p>
+<p align="left">
+0	"A"	"F"	160.0	["A", "B", "D", "E", "F"]	[0.0, 50.0, 90.0, 120.0, 160.0]<br>
+1	"A"	"F"	160.0	["A", "C", "D", "E", "F"]	[0.0, 50.0, 90.0, 120.0, 160.0]<br>
+2	"A"	"F"	170.0	["A", "B", "D", "F"]	    [0.0, 50.0, 90.0, 170.0]<br>
+</p>
+<img src="/img/g11.png"  title="Yen’s Shortest Path from A to F.">
+</p>
+
 
 
 
