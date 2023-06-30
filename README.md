@@ -99,3 +99,70 @@ RETURN path<br>
 <p align="left">
 <img src="/img/g7.png"  title="Breadth First Search algorithm with maxDepth.">
 </p>
+<p align="left">A* Shortest Path algorithm improves on Dijkstra’s by finding shortest paths more quickly.<br></p>
+<p align="left">
+CALL gds.graph.project(<br>
+    'myGraphAShotestPath',<br>
+    'Place',<br>
+    'EROAD',<br>
+    {<br>
+        nodeProperties: ['latitude', 'longitude'],<br>
+        relationshipProperties: 'distance'<br>
+    }<br>
+)<br>
+</p>
+<p align="left">
+MATCH (source:Place {id: "Immingham"}), (destination:Place {id: "London"})<br>
+CALL gds.shortestPath.astar.stream('myGraphAShotestPath', {<br>
+    sourceNode: source,<br>
+    targetNode: destination,<br>
+    latitudeProperty: 'latitude',<br>
+    longitudeProperty: 'longitude',<br>
+    relationshipWeightProperty: 'distance'<br>
+})<br>
+YIELD index, sourceNode, targetNode, totalCost, nodeIds, costs, path<br>
+RETURN<br>
+    index,<br>
+    gds.util.asNode(sourceNode).id AS sourceNodeName,<br>
+    gds.util.asNode(targetNode).id AS targetNodeName,<br>
+    totalCost,<br>
+    [nodeId IN nodeIds | gds.util.asNode(nodeId).id] AS nodeNames,<br>
+    costs,<br>
+    nodes(path) as path<br>
+ORDER BY index<br>
+</p>
+<img src="/img/g8.png"  title="Breadth First Search algorithm with maxDepth.">
+</p>
+<p align="left">
+index	sourceNodeName	targetNodeName	totalCost	nodeNames	                            costs<br>
+0	    "Immingham"	    "London"	    351.0	    ["Immingham", "Doncaster", "London"]	[0.0, 74.0, 351.0]<br>
+</p>
+<p align="left">
+MATCH (source:Place {id: "London"}), (target:Place {id: "Gouda"})<br>
+CALL gds.shortestPath.astar.stream('myGraphAShotestPath', {<br>
+    sourceNode: source,<br>
+    targetNode: target,<br>
+    latitudeProperty: 'latitude',<br>
+    longitudeProperty: 'longitude',<br>
+    relationshipWeightProperty: 'distance'<br>
+})<br>
+YIELD index, sourceNode, targetNode, totalCost, nodeIds, costs, path<br>
+RETURN<br>
+    index,<br>
+    gds.util.asNode(sourceNode).id AS sourceNodeName,<br>
+    gds.util.asNode(targetNode).id AS targetNodeName,<br>
+    totalCost,<br>
+    [nodeId IN nodeIds | gds.util.asNode(nodeId).id] AS nodeNames,<br>
+    costs,<br>
+    nodes(path) as path<br>
+ORDER BY index<br>
+</p>
+<p align="left">
+index	sourceNodeName	targetNodeName	totalCost	nodeNames	                                                                                costs<br>
+0	    "London"	    "Gouda"	        426.0	    ["London", "Colchester", "Ipswich", "Felixstowe", "Hoek van Holland", "Den Haag", "Gouda"]	[0.0, 106.0, 138.0, 160.0, 367.0, 394.0, 426.0]<br>
+</p>
+
+
+
+
+
