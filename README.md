@@ -163,6 +163,30 @@ index	sourceNodeName	targetNodeName	totalCost	nodeNames	                        
 </p>
 <img src="/img/g9.png"  title="Shrotest path algorithm from London to Gouda.">
 </p>
+<p align="left">Yen’s Shortest Path algorithm</p>
+<p align="left">
+MATCH (source:Place {id: "Hoek van Holland"}), (target:Place {id: "Utrecht"})<br>
+CALL gds.shortestPath.yens.stream('myGraphAShotestPath', {<br>
+    sourceNode: source,<br>
+    targetNode: target,<br>
+    k: 3,<br>
+    relationshipWeightProperty: 'distance'<br>
+})<br>
+YIELD index, sourceNode, targetNode, totalCost, nodeIds, costs, path<br>
+RETURN<br>
+    index,<br>
+    gds.util.asNode(sourceNode).id AS sourceNodeName,<br>
+    gds.util.asNode(targetNode).id AS targetNodeName,<br>
+    totalCost,<br>
+    [nodeId IN nodeIds | gds.util.asNode(nodeId).id] AS nodeNames,<br>
+    costs,<br>
+    nodes(path) as path<br>
+ORDER BY index<br>
+</p>
+<img src="/img/g10.png"  title="Shrotest path algorithm from Hoek van Holland to Gouda.">
+</p>
+
+
 
 
 
