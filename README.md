@@ -235,7 +235,112 @@ ORDER BY index<br>
 <img src="/img/g11.png"  title="Yen’s Shortest Path from A to F.">
 </p>
 
+<p align="left">CALL gds.graph.project(<br>
+  'myGraphPlace',<br>
+  'Place',<br>
+  {<br>
+    EROAD: {<br>
+      properties: 'distance',<br>
+      orientation: 'UNDIRECTED'<br>
+    }<br>
+  }<br>
+)<br>
+<br>
+MATCH (n:Place{id: 'London'})<br>
+CALL gds.beta.spanningTree.stream('myGraphPlace', {<br>
+  sourceNode: id(n),<br>
+  relationshipWeightProperty: 'distance'<br>
+})<br>
+YIELD nodeId,parentId, weight<br>
+RETURN gds.util.asNode(nodeId).id AS node, gds.util.asNode(parentId).id AS parent,weight<br>
+ORDER BY node<br>
+<br>
+node	            parent	            weight<br>
+"Amsterdam"	        "Utrecht"	        46.0<br>
+"Colchester"        "London"	        106.0<br>
+"Den Haag"	        "Hoek van Holland"	27.0<br>
+"Doncaster"	        "London"	        277.0<br>
+"Felixstowe"        "Ipswich"	        22.0<br>
+"Gouda"	            "Rotterdam"	        25.0<br>
+"Hoek van Holland"	"Felixstowe"	    207.0<br>
+"Immingham"	        "Doncaster"	        74.0<br>
+"Ipswich"	        "Colchester"	    32.0<br>
+"London"	        "London"	        0.0<br>
+"Rotterdam"	        "Den Haag"	        26.0<br>
+"Utrecht"	        "Gouda"	            35.0<br>
+<br>
+</p>
+<p align="left">All Pairs Shortest Path</p>
+<p align="left">All shortest Path<br>
+CALL gds.graph.project(<br>
+  'cypherGraph',<br>
+  'Place',<br>
+  {<br>
+    EROAD: {<br>
+      properties: 'distance'<br>
+    }<br>
+  }<br>
+)<br>
+YIELD graphName</p>
+<p align="left">CALL gds.alpha.allShortestPaths.stream('cypherGraph', {<br>
+  relationshipWeightProperty: 'distance'<br>
+})<br>
+YIELD sourceNodeId, targetNodeId, distance<br>
+WITH sourceNodeId, targetNodeId, distance<br>
+WHERE gds.util.isFinite(distance) = true<br>
+<br>
+MATCH (source:Place) WHERE id(source) = sourceNodeId<br>
+MATCH (target:Place) WHERE id(target) = targetNodeId<br>
+WITH source, target, distance WHERE source <> target<br>
+<br>
+RETURN source.id AS source, target.id AS target, distance<br>
+ORDER BY distance DESC, source ASC, target ASC<br>
+LIMIT 10<br></p>
 
+<p align="left">source	target	distance<br>
+"Amsterdam"	"Hoek van Holland"	1087.0<br>
+"Amsterdam"	"Felixstowe"	880.0<br>
+"Amsterdam"	"Ipswich"	858.0<br>
+"Amsterdam"	"Colchester"	826.0<br>
+"Immingham"	"Utrecht"	812.0<br>
+"Immingham"	"Gouda"	777.0<br>
+"Immingham"	"Rotterdam"	751.0<br>
+"Immingham"	"Den Haag"	745.0<br>
+"Doncaster"	"Utrecht"	738.0<br>
+"Amsterdam"	"London"	720.0</p>
+<br>
+<p align="left">Single Source Shortest Path (SSSP)</p>
+<p align="left">CALL gds.graph.project(<br>
+    'myGraph',<br>
+    'Place',<br>
+    'EROAD',<br>
+    {<br>
+        relationshipProperties: 'distance'<br>
+    }<br>
+)</p>
+<br>
+<p align="left">MATCH (source:Place {id: 'London'})<br>
+CALL gds.bellmanFord.stream('myGraph', {<br>
+    sourceNode: source,<br>
+    relationshipWeightProperty: 'distance'<br>
+})<br>
+YIELD index, sourceNode, targetNode, totalCost, nodeIds, costs, route, isNegativeCycle<br>
+RETURN<br>
+    index,<br>
+    gds.util.asNode(sourceNode).id AS sourceNode,<br>
+    gds.util.asNode(targetNode).id AS targetNode,<br>
+    totalCost,<br>
+    [nodeId IN nodeIds | gds.util.asNode(nodeId).id] AS nodeNames,<br>
+    costs,<br>
+    nodes(route) as route,<br>
+    isNegativeCycle as isNegativeCycle<br>
+ORDER BY index</p>
+<br>
+<p align="left">index	sourceNode	targetNode	totalCost	nodeNames	costs	route	isNegativeCycle<br>
+0	    "London"	"Utrecht"	461.0	["London", "Colchester", "Ipswich", "Felixstowe", "Hoek van Holland", "Den Haag", "Gouda", "Utrecht"]	[0.0, 106.0, 138.0, 160.0, 367.0, 394.0, 426.0, 461.0]<br>
+</p>
+<img src="/img/g15.png"  title="Single Source Shortest Path (SSSP)">
+</p>
 
 
 
